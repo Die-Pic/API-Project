@@ -381,19 +381,19 @@ void constraints(const char *p, const char *res, char *corr, unsigned short int 
 
   for(i = 0; i < stringDim; i++){
     if(res[i] == '+'){
-      corr[i] = p[i];     //Assign the correct letter at the correct position
-      atLeastTemp[(int)p[i] + OFFSET]++;    //Increase the number of instance of that character that are present at least
-      if(exactly[(int)p[i] + OFFSET] != -1)  //If exactly number as  already been set it updates it
+      corr[i] = p[i];                         //Assign the correct letter at the correct position
+      atLeastTemp[(int)p[i] + OFFSET]++;      //Increase the number of instance of that character that are present at least
+      if(exactly[(int)p[i] + OFFSET] != -1)   //If exactly number as  already been set it updates it
         exactly[(int)p[i] + OFFSET]++;
     }
     else{
-      wrg[i][(int)p[i] + OFFSET]++;   //Setting character wrong in that position
+      wrg[i][(int)p[i] + OFFSET]++;           //Setting character wrong in that position
 
       if(res[i] == '|'){
-        atLeastTemp[(int)p[i] + OFFSET]++;     //Increase the number of instance of that character that are present at least
+        atLeastTemp[(int)p[i] + OFFSET]++;    //Increase the number of instance of that character that are present at least
       }
       else{
-        exactly[(int)p[i] + OFFSET] = atLeastTemp[(int)p[i] + OFFSET];
+        exactly[(int)p[i] + OFFSET] = (short int)atLeastTemp[(int)p[i] + OFFSET];
       }
     }
   }
@@ -409,21 +409,20 @@ unsigned short int checkConstraints(const char* word, const char* corr, unsigned
 
   for(i = 0; i < stringDim; i++){
     if(corr[i] == '/'){
-      if(wrg[i][(int)word[i] + OFFSET]){    //Check if position i is a forbidden char in that position
+      if(wrg[i][(int)word[i] + OFFSET]){      //Check if position i is a forbidden char in that position
         return 0;
       }
     }
     else{
-      if(word[i] != corr[i])    //Check if char is different from the correct one
+      if(word[i] != corr[i])                  //Check if char is different from the correct one
         return 0;
     }
-    //Counts the occurrence of any char
-    count[(int)word[i] + OFFSET]++;   //Increase the counter of characters and check if exceed the limit
-    if(exactly[(int)word[i] + OFFSET] != -1 && count[(int)word[i] + OFFSET] > exactly[(int)word[i] + OFFSET])
+    count[(int)word[i] + OFFSET]++;           //Counts the occurrence of any char
+    if(exactly[(int)word[i] + OFFSET] != -1 && count[(int)word[i] + OFFSET] > exactly[(int)word[i] + OFFSET])   //Check if exceed the limit
       return 0;
   }
 
-  for(i = 0; i < CHARLENG; i++){    //Check all the at least character
+  for(i = 0; i < CHARLENG; i++){              //Check all the at least character
     if(count[i] < atLeast[i])
       return 0;
   }
